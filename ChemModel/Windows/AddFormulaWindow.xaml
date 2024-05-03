@@ -1,0 +1,122 @@
+﻿<Window x:Class="ChemModel.Windows.AddFormulaWindow.AddFormulaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:WpfMath.Controls;assembly=WpfMath"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:rules="clr-namespace:ChemModel.ValidationRules"
+        WindowState="Maximized"
+        WindowStyle="ToolWindow"
+        mc:Ignorable="d"
+        Name="this"
+        Title="AddFormulaWindow" Height="720" Width="1280">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+        <TextBox Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center" materialDesign:ValidationAssist.OnlyShowOnFocus="True"  materialDesign:HintAssist.Hint="Название модели" Style="{StaticResource MaterialDesignOutlinedTextBox}">
+            <TextBox.Text>
+                <Binding Path="Name" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <rules:ValidateNotEmpty ValidationStep="UpdatedValue"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Button Content="Построение" Command="{Binding ConstructFormulaCommand}" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Center"/>
+        <Button Content="Очистить" Command="{Binding ClearFormulaCommand}" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Center"/>
+        <TextBlock Margin="5" Text="Эмпирические коэффициенты" TextWrapping="Wrap" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignBodyLargeTextBlock}"/>
+        <DataGrid IsReadOnly="True" Name="empGrid" Grid.Row="1" Grid.Column="0" Margin="5" Grid.RowSpan="3" Grid.ColumnSpan="3" ColumnWidth="*" SelectionMode="Single"
+            ItemsSource="{Binding EmpiricData}" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserDeleteRows="False" CanUserAddRows="False"
+                  CanUserResizeRows="False" CanUserSortColumns="False" CanUserResizeColumns="False" SelectedItem="{Binding SelectedEmpiric}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Binding="{Binding Path=Property.Name}"/>
+                <DataGridTextColumn Header="Обозначение" Binding="{Binding Path=Property.Chars}"/>
+                <DataGridTextColumn Header="Значение" Binding="{Binding Path=Value}"/>
+                <DataGridTextColumn Header="Единицы измерения" Binding="{Binding Path=Property.Units}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center"
+              IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+              Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+              ToolTip="Добивать эмирический коэффициент"
+                Command="{Binding AddEmpiricCommand}"
+             >
+                        <materialDesign:PackIcon
+                Width="20"
+                Height="20"
+                Kind="Plus"
+                />
+        </Button>
+        <Button Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center"
+      IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+      Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+      ToolTip="Удалить выбранный эмирический коэффициент"
+                Command="{Binding DeleteEmpiricCommand}"
+     >
+            <materialDesign:PackIcon
+        Width="20"
+        Height="20"
+        Kind="Minus"
+        />
+        </Button>
+        <TextBlock Margin="5" Text="Переменные" TextWrapping="Wrap" Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="3" 
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignBodyLargeTextBlock}"/>
+        <DataGrid IsReadOnly="True" Name="varGrid" Grid.Row="1" Grid.Column="4" Margin="5" Grid.RowSpan="3" Grid.ColumnSpan="3" ColumnWidth="*" SelectionMode="Single"
+            ItemsSource="{Binding VarData}" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserDeleteRows="False" CanUserAddRows="False"
+            CanUserResizeRows="False" CanUserSortColumns="False" CanUserResizeColumns="False" SelectedItem="{Binding SelectedVar}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Binding="{Binding Path=Property.Name}"/>
+                <DataGridTextColumn Header="Обозначение" Binding="{Binding Path=Property.Chars}"/>
+                <DataGridTextColumn Header="Единицы измерения" Binding="{Binding Path=Property.Units}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Grid.Row="4" Grid.Column="4" HorizontalAlignment="Center"
+              IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+              Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+              ToolTip="Добивать варьируемый параметр"
+                Command="{Binding AddVarCommand}"
+             >
+            <materialDesign:PackIcon
+                Width="20"
+                Height="20"
+                Kind="Plus"
+                />
+        </Button>
+        <Button Grid.Row="4" Grid.Column="6" HorizontalAlignment="Center"
+      IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+      Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+      ToolTip="Удалить выбранный варьируемый параметр"
+                Command="{Binding DeleteVarCommand}"
+     >
+            <materialDesign:PackIcon
+        Width="20"
+        Height="20"
+        Kind="Minus"
+        />
+        </Button>
+        <ScrollViewer Grid.ColumnSpan="5" Grid.Row="5" Padding="10" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="5">
+            <controls:FormulaControl
+                 Formula="{Binding TexFormula}"
+                 SelectionBrush="LightBlue"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </ScrollViewer>
+        <Button Content="Сохранить формулу" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=this}" Grid.Column="5" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="5"/>
+    </Grid>
+</Window>
