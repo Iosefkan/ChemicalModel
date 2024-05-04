@@ -19,9 +19,7 @@ namespace ChemModel.ViewModels.ViewModelsData
         public double Step {  get; set; }
         public Material Material { get; set; }
         public MathModel MathModel { get; set; }
-        public List<MathModelEmpiricBind> Coefs { get; set; }
+        public List<MaterialEmpiricBind> Coefs { get; set; }
         public List<MaterialPropertyBind> Properties { get; set; }
-        public List<MaterialMathModelPropertyBind> MatMathProps { get; set; }
-
     }
 }

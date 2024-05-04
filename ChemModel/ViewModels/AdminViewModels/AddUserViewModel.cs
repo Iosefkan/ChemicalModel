@@ -33,7 +33,7 @@ namespace ChemModel.ViewModels
         [RelayCommand(CanExecute = nameof(CanOk))]
         private void Ok(Window window)
         {
-            WeakReferenceMessenger.Default.Send(new UserMessage(new NewUser() { Name = Login, Password = HashStatic.GetHash256(Password), Role = Role }));
+            WeakReferenceMessenger.Default.Send(new NewUserMessage(new NewUser() { Name = Login, Password = HashStatic.GetHash256(Password), Role = Role }));
             window.Close();
         }
     }

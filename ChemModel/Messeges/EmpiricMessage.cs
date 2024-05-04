@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ChemModel.Messeges
 {
-    public class EmpiricMessage : ValueChangedMessage<MathModelEmpiricBind>
+    public class EmpiricMessage : ValueChangedMessage<EmpiricCoefficientMathModel>
     {
-        public EmpiricMessage(MathModelEmpiricBind value) : base(value)
+        public EmpiricMessage(EmpiricCoefficientMathModel value) : base(value)
         {
 
         }

@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace ChemModel.Data.DbTables
 {
-    public class VarCoefficient
+    public class EmpiricCoefficientMathModel
     {
         [Key]
         public int Id { get; set; }
         [Required]
         public int PropertyId { get; set; }
         [Required, ForeignKey("PropertyId")]
-        public Property Property { get; set; }
+        public EmpiricCoefficient Property { get; set; }
         [Required]
         public int MathModelId { get; set; }
         [Required, ForeignKey("MathModelId")]

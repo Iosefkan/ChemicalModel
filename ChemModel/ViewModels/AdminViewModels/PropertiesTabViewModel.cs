@@ -44,9 +44,8 @@ namespace ChemModel.ViewModels
         private void AddProp()
         {
             var allProps = ctx.Properties.ToList();
-            var allParams = ctx.Properties.ToList();
-            var allMathProps = ctx.MaterialMathModelProperties.ToList();
-            if (allProps.FirstOrDefault(x => x.Name == NewPropName || x.Chars == NewPropChars) is not null || allParams.FirstOrDefault(x => x.Name == NewPropName || x.Chars == NewPropChars) is not null || allMathProps.FirstOrDefault(x => x.Name == NewPropName || x.Chars == NewPropChars) is not null)
+            var allParams = ctx.EmpiricCoefficients.ToList();
+            if (allProps.FirstOrDefault(x => x.Name == NewPropName || x.Chars == NewPropChars) is not null || allParams.FirstOrDefault(x => x.Name == NewPropName || x.Chars == NewPropChars) is not null)
             {
                 MessageBox.Show("Переменная, участвующая в уравнениях, с таким именем или обозначением уже существует","Предупреждение",MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;

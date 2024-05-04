@@ -16,8 +16,8 @@ namespace ChemModel.Data.DbTables
         public string Formula { get; set; }
         [Required, Display(Name = "TeX формула")]
         public string TexFormula { get; set; }
-        public List<MathModelEmpiricBind> EmpiricCoefficients { get; set; } = new();
-        public List<VarCoefficient> VarCoefficients { get; set; } = new();
+        public List<EmpiricCoefficientMathModel> EmpiricCoefficients { get; set; } = new();
+        public List<VarCoefficientMathModel> VarCoefficients { get; set; } = new();
         public override string ToString()
         {
             return Name;

@@ -48,7 +48,6 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название" Binding="{Binding Path=Property.Name}"/>
                 <DataGridTextColumn Header="Обозначение" Binding="{Binding Path=Property.Chars}"/>
-                <DataGridTextColumn Header="Значение" Binding="{Binding Path=Value}"/>
                 <DataGridTextColumn Header="Единицы измерения" Binding="{Binding Path=Property.Units}"/>
             </DataGrid.Columns>
         </DataGrid>

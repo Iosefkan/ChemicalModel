@@ -20,8 +20,6 @@ namespace ChemModel.ViewModels
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(OkCommand))]
         private EmpiricCoefficient? selectedEmpiric;
-        [ObservableProperty]
-        private double value = 0;
         public AddEmpiricViewModel(List<EmpiricCoefficient> empirics)
         {
             _allEmpirics = empirics;
@@ -29,11 +27,10 @@ namespace ChemModel.ViewModels
         [RelayCommand(CanExecute = nameof(CanOk))]
         private void Ok(Window window)
         {
-            WeakReferenceMessenger.Default.Send(new EmpiricMessage(new MathModelEmpiricBind()
+            WeakReferenceMessenger.Default.Send(new EmpiricMessage(new EmpiricCoefficientMathModel()
             {
                 Property = SelectedEmpiric!,
                 PropertyId = SelectedEmpiric!.Id,
-                Value = Value,
             }));
             window.Close();
         }

@@ -204,12 +204,6 @@ namespace ChemModel.ViewModels
                 worksheet.Cells[row, 5] = prop.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 row++;
             }
-            foreach (var prop in ExcelData.MatMathProps)
-            {
-                worksheet.Cells[row, 4] = prop.Property.Name + ", " + prop.Property.Units.Name;
-                worksheet.Cells[row, 5] = prop.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
-                row++;
-            }
             worksheet.Cells[row, 4] = "Критериальные показатели процесса:";
             rng = worksheet.Cells[row, 4] as Excel.Range;
             rng.Font.Bold = true;

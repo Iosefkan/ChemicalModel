@@ -50,11 +50,9 @@ namespace ChemModel.ViewModels
         [ObservableProperty]
         private double step = 0.1;
         [ObservableProperty]
-        private ObservableCollection<MathModelEmpiricBind>? coefs;
+        private ObservableCollection<MaterialEmpiricBind>? coefs;
         [ObservableProperty]
         private ObservableCollection<MaterialPropertyBind>? properties;
-        [ObservableProperty]
-        private ObservableCollection<MaterialMathModelPropertyBind>? matMathProps;
         public ParamsViewModel() 
         {
             using var ctx = new Context();
@@ -75,14 +73,7 @@ namespace ChemModel.ViewModels
                 return;
             using var ctx = new Context();
             Properties = new ObservableCollection<MaterialPropertyBind>(ctx.MaterialPropertyBinds.Where(x => x.MaterialId == SelectedMaterial.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
-            MatMathProps = new ObservableCollection<MaterialMathModelPropertyBind>(ctx.MaterialMathModelPropBinds.Where(x => x.MaterialId == SelectedMaterial.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
-        }
-        public void MathModelSelected()
-        {
-            if (SelectedModel is null)
-                return;
-            using var ctx = new Context();
-            Coefs = new ObservableCollection<MathModelEmpiricBind>(ctx.MathModelEmpiricBinds.Where(x => x.MathModelId == SelectedModel.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
+            Coefs = new ObservableCollection<MaterialEmpiricBind>(ctx.MaterialEmpiricBinds.Where(x => x.MaterialId == SelectedMaterial.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
         }
         private bool CanSolve() =>
             SelectedMaterial is not null && SelectedModel is not null && Width > 0 && Length > 0 && Height > 0 && Velocity > 0 && Step > 0;
@@ -102,8 +93,8 @@ namespace ChemModel.ViewModels
                 translator.Add(prop.Property.Chars, prop.Value);
             }
             translator.Add("T", 0);
-            double index = MatMathProps!.First(x => x.Property.Chars == "n").Value;
-            double termCoef = MatMathProps!.First(x => x.Property.Chars == "au").Value;
+            double index = Coefs!.First(x => x.Property.Chars == "n").Value;
+            double termCoef = Coefs!.First(x => x.Property.Chars == "au").Value;
             var formula = translator.BuildFormula(SelectedModel!.Formula);
             int formulaOpers = CountMathOperations(SelectedModel.Formula);
             Variable tempVar = translator.Get("T");
@@ -168,11 +159,10 @@ namespace ChemModel.ViewModels
             long miliseconds = stopwatch.ElapsedMilliseconds;
             WeakReferenceMessenger.Default.Send(new DataMessage(data));
             WeakReferenceMessenger.Default.Send(new SolveParamsMessage(new SolveParams() { Miliseconds = miliseconds, Operations = mathOperCount }));
-            WeakReferenceMessenger.Default.Send(new ResultDataMessage(new ViewModelsData.ResultData() { Temperature = data[data.Length - 1].Temp, Performance = Ro * Qch, Viscosity = data[data.Length - 1].Vaz }));
+            WeakReferenceMessenger.Default.Send(new ResultDataMessage(new ViewModelsData.ResultData() { Temperature = data[data.Length - 1].Temp, Performance = Ro * Qch * 3600, Viscosity = data[data.Length - 1].Vaz }));
             WeakReferenceMessenger.Default.Send(new DataExcelMessage(new ViewModelsData.DataExcel()
             {
                 Coefs = Coefs.ToList(),
-                MatMathProps = MatMathProps!.ToList(),
                 Properties = Properties.ToList(),
                 Velocity = Velocity,
                 Height = Height,

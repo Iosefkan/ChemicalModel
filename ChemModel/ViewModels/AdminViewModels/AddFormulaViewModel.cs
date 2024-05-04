@@ -26,15 +26,15 @@ namespace ChemModel.ViewModels
         private List<EmpiricCoefficient> allEmpiric;
         private List<Property> allProps;
         [ObservableProperty]
-        private ObservableCollection<MathModelEmpiricBind> empiricData = new ObservableCollection<MathModelEmpiricBind>();
+        private ObservableCollection<EmpiricCoefficientMathModel> empiricData = new ObservableCollection<EmpiricCoefficientMathModel>();
         [ObservableProperty]
-        private ObservableCollection<VarCoefficient> varData = new ObservableCollection<VarCoefficient>();
+        private ObservableCollection<VarCoefficientMathModel> varData = new ObservableCollection<VarCoefficientMathModel>();
         [NotifyCanExecuteChangedFor(nameof(DeleteEmpiricCommand))]
         [ObservableProperty]
-        private MathModelEmpiricBind? selectedEmpiric = null;
+        private EmpiricCoefficientMathModel? selectedEmpiric = null;
         [NotifyCanExecuteChangedFor(nameof(DeleteVarCommand))]
         [ObservableProperty]
-        private VarCoefficient? selectedVar = null;
+        private VarCoefficientMathModel? selectedVar = null;
         [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
         [ObservableProperty]
         private string name = "";
@@ -172,8 +172,8 @@ namespace ChemModel.ViewModels
                 }
             }
             ctx.MathModels.Add(mathModel);
-            ctx.VarCoefficients.AddRange(mathModel.VarCoefficients);
-            ctx.MathModelEmpiricBinds.AddRange(mathModel.EmpiricCoefficients);
+            ctx.VarCoefficientsMaths.AddRange(mathModel.VarCoefficients);
+            ctx.EmpiricCoefficientMaths.AddRange(mathModel.EmpiricCoefficients);
             ctx.SaveChanges();
             WeakReferenceMessenger.Default.Send(new MathModelMessage(mathModel));
             window.Close();

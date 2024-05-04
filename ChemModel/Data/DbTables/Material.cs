@@ -13,6 +13,6 @@ namespace ChemModel.Data.DbTables
         [Required, Display(Name = "Навзвание")]
         public string Name { get; set; }
         public List<MaterialPropertyBind> Properties { get; set; } = new();
-        public List<MaterialMathModelPropertyBind> MathModelProperties { get; set; } = new();
+        public List<MaterialEmpiricBind> MathModelProperties { get; set; } = new();
     }
 }

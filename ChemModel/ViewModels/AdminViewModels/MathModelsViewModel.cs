@@ -17,13 +17,13 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Media3D;
 
 namespace ChemModel.ViewModels
 {
-    public partial class MathModelsViewModel : ObservableObject, IRecipient<MathModelMessage>
+    public partial class MathModelsViewModel : ObservableObject, IRecipient<MathModelMessage>, IRecipient<UserMessage>
     {
-        [ObservableProperty]
-        private ObservableCollection<MathModelEmpiricBind>? coefs;
+        private User? user;
         [ObservableProperty]
         private ObservableCollection<MathModel> mathModels;
         [ObservableProperty]
@@ -35,7 +35,6 @@ namespace ChemModel.ViewModels
             if (MathModels.Any())
             {
                 SelectedModel = MathModels[0];
-                Coefs = new ObservableCollection<MathModelEmpiricBind>(ctx.MathModelEmpiricBinds.Where(x => x.MathModelId == SelectedModel.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
             }
             WeakReferenceMessenger.Default.Register<MathModelMessage>(this);
         }
@@ -52,7 +51,6 @@ namespace ChemModel.ViewModels
             MathModels.Remove(SelectedModel!);
             ctx.SaveChanges();
             SelectedModel = null;
-            Coefs = null;
         }
         [RelayCommand]
         private void AddMathModel()
@@ -63,22 +61,26 @@ namespace ChemModel.ViewModels
         {
             if (SelectedModel is null)
                 return;
-            Coefs = new ObservableCollection<MathModelEmpiricBind>(ctx.MathModelEmpiricBinds.Where(x => x.MathModelId == SelectedModel.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
-        }
-        [RelayCommand]
-        private void SaveChanges()
-        {
-            if (Coefs is null || !Coefs.Any())
-            {
-                return;
-            }
-            ctx.MathModelEmpiricBinds.UpdateRange(Coefs);
-            ctx.SaveChanges();
-            MessageBox.Show("Сохранение прошло успешно", "Сохранение успешно", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         public void Receive(MathModelMessage message)
         {
             MathModels.Add(message.Value);
+            if (user is not null)
+            {
+                ctx.UserAddMathModels.Add(new UserAddMathModel()
+                {
+                    MathModel = message.Value,
+                    MathModelId = message.Value.Id,
+                    User = user,
+                    UserId = user.Id,
+                });
+                ctx.SaveChanges();
+            }
+        }
+
+        public void Receive(UserMessage message)
+        {
+            user = message.Value;
         }
     }
 }

@@ -17,7 +17,7 @@ using ChemModel.Windows;
 
 namespace ChemModel.ViewModels
 {
-    public partial class UsersTabViewModel : ObservableObject, IRecipient<UserMessage>
+    public partial class UsersTabViewModel : ObservableObject, IRecipient<NewUserMessage>
     {
         private readonly Dictionary<string, string> roles = new Dictionary<string, string>()
         {
@@ -48,7 +48,7 @@ namespace ChemModel.ViewModels
             {
                 SelectedAdmin = Admins[0];
             }
-            WeakReferenceMessenger.Default.Register<UserMessage>(this);
+            WeakReferenceMessenger.Default.Register<NewUserMessage>(this);
         }
         [RelayCommand]
         private void AddResearcher()
@@ -104,7 +104,7 @@ namespace ChemModel.ViewModels
             SelectedAdmin = null;
         }
 
-        public void Receive(UserMessage message)
+        public void Receive(NewUserMessage message)
         {
             NewUser user = message.Value;
             string role = user.Role;

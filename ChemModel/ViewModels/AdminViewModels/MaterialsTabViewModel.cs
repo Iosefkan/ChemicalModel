@@ -20,8 +20,9 @@ using System.Windows;
 namespace ChemModel.ViewModels
 {
 
-    public partial class MaterialsTabViewModel : ObservableObject, IRecipient<MaterialMessage>
+    public partial class MaterialsTabViewModel : ObservableObject, IRecipient<MaterialMessage>, IRecipient<UserMessage>
     {
+        private User? user;
         [ObservableProperty]
         private ObservableCollection<MatGrid> mats;
         [ObservableProperty]
@@ -30,7 +31,7 @@ namespace ChemModel.ViewModels
         [ObservableProperty]
         private ObservableCollection<MaterialPropertyBind>? properties;
         [ObservableProperty]
-        private ObservableCollection<MaterialMathModelPropertyBind>? mathProps;
+        private ObservableCollection<MaterialEmpiricBind>? mathProps;
         public MaterialsTabViewModel()
         {
             using Context ctx = new Context();
@@ -39,7 +40,7 @@ namespace ChemModel.ViewModels
             {
                 SelectedMat = Mats[0];
                 Properties = new ObservableCollection<MaterialPropertyBind>(ctx.MaterialPropertyBinds.Where(x => x.MaterialId == SelectedMat.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
-                MathProps = new ObservableCollection<MaterialMathModelPropertyBind>(ctx.MaterialMathModelPropBinds.Where(x => x.MaterialId == SelectedMat.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
+                MathProps = new ObservableCollection<MaterialEmpiricBind>(ctx.MaterialEmpiricBinds.Where(x => x.MaterialId == SelectedMat.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
             }
             WeakReferenceMessenger.Default.Register<MaterialMessage>(this);
         }
@@ -72,7 +73,7 @@ namespace ChemModel.ViewModels
                 return;
             using Context ctx = new Context();
             Properties = new ObservableCollection<MaterialPropertyBind>(ctx.MaterialPropertyBinds.Where(x => x.MaterialId == SelectedMat.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
-            MathProps = new ObservableCollection<MaterialMathModelPropertyBind>(ctx.MaterialMathModelPropBinds.Where(x => x.MaterialId == SelectedMat.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
+            MathProps = new ObservableCollection<MaterialEmpiricBind>(ctx.MaterialEmpiricBinds.Where(x => x.MaterialId == SelectedMat.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
         }
         [RelayCommand]
         private void SaveChanges()
@@ -83,7 +84,7 @@ namespace ChemModel.ViewModels
             }
             using Context ctx = new Context();
             ctx.MaterialPropertyBinds.UpdateRange(Properties);
-            ctx.MaterialMathModelPropBinds.UpdateRange(MathProps);
+            ctx.MaterialEmpiricBinds.UpdateRange(MathProps);
             ctx.SaveChanges();
             MessageBox.Show("Сохранение прошло успешно", "Сохранение успешно", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -110,10 +111,10 @@ namespace ChemModel.ViewModels
                     Value = 0,
                 });
             }
-            var mathModProps = ctx.MaterialMathModelProperties.ToList();
+            var mathModProps = ctx.EmpiricCoefficients.ToList();
             foreach (var prop in mathModProps)
             {
-                ctx.MaterialMathModelPropBinds.Add(new MaterialMathModelPropertyBind()
+                ctx.MaterialEmpiricBinds.Add(new MaterialEmpiricBind()
                 {
                     Material = material,
                     MaterialId = material.Id,
@@ -123,7 +124,23 @@ namespace ChemModel.ViewModels
                 });
             }
             ctx.SaveChanges();
+            if (user is not null)
+            {
+                ctx.UserAddMaterials.Add(new UserAddMaterial()
+                {
+                    Material = material,
+                    MaterialId = material.Id,
+                    User = user,
+                    UserId = user.Id,
+                });
+                ctx.SaveChanges();
+            }
             Mats.Add(new MatGrid() { Id = material.Id, Name = material.Name });
+        }
+
+        public void Receive(UserMessage message)
+        {
+            user = message.Value;
         }
     }
 }

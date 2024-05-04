@@ -28,7 +28,7 @@ namespace ChemModel.ViewModels
         [RelayCommand(CanExecute = nameof(CanOk))]
         private void Ok(Window window)
         {
-            WeakReferenceMessenger.Default.Send(new VarMessage(new VarCoefficient()
+            WeakReferenceMessenger.Default.Send(new VarMessage(new VarCoefficientMathModel()
             {
                 Property = SelectedVar!,
                 PropertyId = SelectedVar!.Id,

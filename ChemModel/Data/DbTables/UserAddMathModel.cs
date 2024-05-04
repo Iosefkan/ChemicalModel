@@ -8,18 +8,14 @@ using System.Threading.Tasks;
 
 namespace ChemModel.Data.DbTables
 {
-    public class MathModelEmpiricBind
+    public class UserAddMathModel
     {
         public int Id { get; set; }
-        [Required]
-        public int PropertyId { get; set; }
-        [Required, ForeignKey(nameof(PropertyId))]
-        public EmpiricCoefficient Property { get; set; }
-        [Required]
+        public int UserId { get; set; }
+        [Required, ForeignKey(nameof(UserId))]
+        public User User { get; set; }
         public int MathModelId { get; set; }
         [Required, ForeignKey(nameof(MathModelId))]
         public MathModel MathModel { get; set; }
-        [Required]
-        public double Value { get; set; }
     }
 }

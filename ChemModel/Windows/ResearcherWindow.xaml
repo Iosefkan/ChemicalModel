@@ -87,7 +87,7 @@
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.RowSpan="2">
+                            <ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.RowSpan="3">
                                 <ListBox x:Name="CoefList" ItemsSource="{Binding Coefs}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
@@ -106,32 +106,6 @@
                                                 <TextBlock Grid.Column="2" Text="{Binding Path=Property.Chars}" VerticalAlignment="Center" Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
                                                 <TextBlock Grid.Column="3" Text=": " VerticalAlignment="Center" Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
                                                 <TextBox Grid.Column="4" Text="{Binding Path=Value, ConverterCulture=ru-RU}" VerticalAlignment="Center"  PreviewTextInput="TextBox_Preview"/>
-                                                <TextBlock Grid.Column="5" Text=", " VerticalAlignment="Center" Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
-                                                <TextBlock Grid.Column="6" Text="{Binding Path=Property.Units}" VerticalAlignment="Center" Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </ScrollViewer>
-                            <ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="2">
-                                <ListBox x:Name="MatCoefList" ItemsSource="{Binding MatMathProps}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid Margin="2">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3.5*"/>
-                                                    <ColumnDefinition Width="0.1*"/>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition Width="0.1*"/>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition Width="0.1*"/>
-                                                    <ColumnDefinition/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=Property.Name}" VerticalAlignment="Center" Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
-                                                <TextBlock Grid.Column="1" TextWrapping="Wrap" Text=", " VerticalAlignment="Center" Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
-                                                <TextBlock Grid.Column="2" Text="{Binding Path=Property.Chars}" VerticalAlignment="Center" Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
-                                                <TextBlock Grid.Column="3" Text=": " VerticalAlignment="Center" Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
-                                                <TextBox Grid.Column="4" Text="{Binding Path=Value, ConverterCulture=ru-RU}" VerticalAlignment="Center" PreviewTextInput="TextBox_Preview"/>
                                                 <TextBlock Grid.Column="5" Text=", " VerticalAlignment="Center" Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
                                                 <TextBlock Grid.Column="6" Text="{Binding Path=Property.Units}" VerticalAlignment="Center" Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
                                             </Grid>

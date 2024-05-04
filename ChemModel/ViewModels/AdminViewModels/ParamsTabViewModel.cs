@@ -45,8 +45,7 @@ namespace ChemModel.ViewModels
         {
             var allProps = ctx.Properties.ToList();
             var allParams = ctx.Properties.ToList();
-            var allMathProps = ctx.MaterialMathModelProperties.ToList();
-            if (allProps.FirstOrDefault(x => x.Name == NewParamName || x.Chars == NewParamChars) is not null || allParams.FirstOrDefault(x => x.Name == NewParamName || x.Chars == NewParamChars) is not null || allMathProps.FirstOrDefault(x => x.Name == NewParamName || x.Chars == NewParamChars) is not null)
+            if (allProps.FirstOrDefault(x => x.Name == NewParamName || x.Chars == NewParamChars) is not null || allParams.FirstOrDefault(x => x.Name == NewParamName || x.Chars == NewParamChars) is not null)
             {
                 MessageBox.Show("Переменная, участвующая в уравнениях, с таким именем или обозначением уже существует", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -58,6 +57,19 @@ namespace ChemModel.ViewModels
                 Units = NewParamUnit!,
             };
             ctx.EmpiricCoefficients.Add(prop);
+            ctx.SaveChanges();
+            var mats = ctx.Materials.ToList();
+            foreach (var mat in mats)
+            {
+                ctx.MaterialEmpiricBinds.Add(new MaterialEmpiricBind()
+                {
+                    Material = mat,
+                    MaterialId = mat.Id,
+                    Property = prop,
+                    PropertyId = prop.Id,
+                    Value = 0
+                });
+            }
             ctx.SaveChanges();
             Parameters.Add(prop);
             NewParamChars = "";

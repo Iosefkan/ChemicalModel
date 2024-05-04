@@ -12,6 +12,7 @@ using ChemModel.Windows;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace ChemModel.ViewModels
 {
@@ -39,28 +40,6 @@ namespace ChemModel.ViewModels
                 return;
             }
             using var ctx = new Context();
-            //var userD = new Role() { Name = "user" };
-            //var admin = new Role() { Name = "admin" };
-            //ctx.Roles.AddRange([userD, admin]);
-            //ctx.Users.Add(new User() { Name = "admin", Password = GetHash256("admin"), Role = admin });
-            //var non = new Unit() { Name = "-" };
-            //var au = new Unit() { Name = "Вт/(м^2*°С)" };
-            //ctx.Units.AddRange([non, au]);
-            //var n = new MaterialMathModelProperty()
-            //{
-            //    Chars = "n",
-            //    Name = "Индекс течения материала",
-            //    Units = non,
-            //};
-            //var auu = new MaterialMathModelProperty()
-            //{
-            //    Chars = "au",
-            //    Name = "Коэффициент теплоотдачи от крышки канала к материалу",
-            //    Units = au,
-            //};
-            //ctx.MaterialMathModelProperties.AddRange([n, auu]);
-            //ctx.SaveChanges();
-            //return;
             var user = ctx.Users.Include(x => x.Role).FirstOrDefault(x => x.Name == Login && x.Password == HashStatic.GetHash256(pwb.Password));
             if (user is null)
             {
@@ -71,12 +50,14 @@ namespace ChemModel.ViewModels
             if (user.Role!.Name == "admin")
             {
                 var main = new AdminWindow() { Owner = window };
+                WeakReferenceMessenger.Default.Send(user);
                 window.Hide();
                 main.ShowDialog();
             }
             else if (user.Role.Name == "user")
             {
                 var main = new ResearcherWindow() { Owner = window };
+                WeakReferenceMessenger.Default.Send(user);
                 window.Hide();
                 main.ShowDialog();
             }

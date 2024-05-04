@@ -51,4 +51,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ChemModel.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

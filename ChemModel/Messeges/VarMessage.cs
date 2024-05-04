@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ChemModel.Messeges
 {
-    public class VarMessage : ValueChangedMessage<VarCoefficient>
+    public class VarMessage : ValueChangedMessage<VarCoefficientMathModel>
     {
-        public VarMessage(VarCoefficient value) : base(value)
+        public VarMessage(VarCoefficientMathModel value) : base(value)
         {
 
         }
