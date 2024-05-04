@@ -19,7 +19,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Column="0" Margin="5" VerticalAlignment="Center" materialDesign:ValidationAssist.OnlyShowOnFocus="True"  materialDesign:HintAssist.Hint="Логин" Style="{StaticResource MaterialDesignOutlinedTextBox}">
+        <TextBox Grid.Column="0" Margin="5" VerticalAlignment="Center" materialDesign:ValidationAssist.OnlyShowOnFocus="True"  materialDesign:HintAssist.Hint="Логин" Style="{StaticResource MaterialDesignOutlinedTextBox}" MaxLength="50">
             <TextBox.Text>
                 <Binding Path="Login" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
@@ -28,7 +28,7 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <TextBox  Margin="5"  Grid.Column="1" VerticalAlignment="Center" materialDesign:ValidationAssist.OnlyShowOnFocus="True"  materialDesign:HintAssist.Hint="Пароль" Style="{StaticResource MaterialDesignOutlinedTextBox}">
+        <TextBox  Margin="5"  Grid.Column="1" VerticalAlignment="Center" materialDesign:ValidationAssist.OnlyShowOnFocus="True"  materialDesign:HintAssist.Hint="Пароль" Style="{StaticResource MaterialDesignOutlinedTextBox}" MaxLength="50">
             <TextBox.Text>
                 <Binding Path="Password" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>

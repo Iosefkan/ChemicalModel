@@ -73,7 +73,22 @@ namespace ChemModel.ViewModels
                 return;
             using var ctx = new Context();
             Properties = new ObservableCollection<MaterialPropertyBind>(ctx.MaterialPropertyBinds.Where(x => x.MaterialId == SelectedMaterial.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
-            Coefs = new ObservableCollection<MaterialEmpiricBind>(ctx.MaterialEmpiricBinds.Where(x => x.MaterialId == SelectedMaterial.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
+            if (SelectedModel is null)
+            {
+                return;
+            }
+            var mathEmpirics = ctx.EmpiricCoefficientMaths.Where(x => x.MathModelId == SelectedModel.Id).Select(x => x.PropertyId).ToList();
+            Coefs = new ObservableCollection<MaterialEmpiricBind>(ctx.MaterialEmpiricBinds.Where(x => x.MaterialId == SelectedMaterial.Id && mathEmpirics.Contains(x.Id)).Include(x => x.Property).Include(x => x.Property.Units).ToList());
+        }
+        public void MathModelSelected()
+        {
+            if (SelectedMaterial is null || SelectedModel is null)
+            {
+                return;
+            }
+            using var ctx = new Context();
+            var mathEmpirics = ctx.EmpiricCoefficientMaths.Where(x => x.MathModelId == SelectedModel.Id).Select(x => x.PropertyId).ToList();
+            Coefs = new ObservableCollection<MaterialEmpiricBind>(ctx.MaterialEmpiricBinds.Where(x => x.MaterialId == SelectedMaterial.Id && mathEmpirics.Contains(x.Id)).Include(x => x.Property).Include(x => x.Property.Units).ToList());
         }
         private bool CanSolve() =>
             SelectedMaterial is not null && SelectedModel is not null && Width > 0 && Length > 0 && Height > 0 && Velocity > 0 && Step > 0;

@@ -31,6 +31,7 @@ namespace ChemModel.Windows
             var paramsModel = new ParamsViewModel();
             modelParams.DataContext = paramsModel;
             matCombo.SelectionChanged += (sender, e) => paramsModel.MaterialSelected();
+            modelCombo.SelectionChanged += (sender, e) => paramsModel.MathModelSelected();
             var graph = new GraphicsViewModel(temp, vaz);
             graphics.DataContext = graph;
             results.DataContext = new ResultsViewModel();

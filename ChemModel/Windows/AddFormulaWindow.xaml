@@ -29,7 +29,7 @@
             <RowDefinition Height="0.5*"/>
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center" materialDesign:ValidationAssist.OnlyShowOnFocus="True"  materialDesign:HintAssist.Hint="Название модели" Style="{StaticResource MaterialDesignOutlinedTextBox}">
+        <TextBox Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center" materialDesign:ValidationAssist.OnlyShowOnFocus="True"  materialDesign:HintAssist.Hint="Название модели" Style="{StaticResource MaterialDesignOutlinedTextBox}" MaxLength="100">
             <TextBox.Text>
                 <Binding Path="Name" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>

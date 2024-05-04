@@ -29,7 +29,7 @@ namespace ChemModel.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=../../../ChemModel.db");
+            optionsBuilder.UseSqlite($"Data Source={DBConfig.Destination}");
         }
     }
 }
