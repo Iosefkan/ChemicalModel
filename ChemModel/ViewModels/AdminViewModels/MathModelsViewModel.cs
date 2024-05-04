@@ -36,6 +36,7 @@ namespace ChemModel.ViewModels
             {
                 SelectedModel = MathModels[0];
             }
+            WeakReferenceMessenger.Default.Register<UserMessage>(this);
             WeakReferenceMessenger.Default.Register<MathModelMessage>(this);
         }
         private bool CanDeleteMathModel()
@@ -67,6 +68,7 @@ namespace ChemModel.ViewModels
             MathModels.Add(message.Value);
             if (user is not null)
             {
+                user = ctx.Users.Find(user.Id);
                 ctx.UserAddMathModels.Add(new UserAddMathModel()
                 {
                     MathModel = message.Value,

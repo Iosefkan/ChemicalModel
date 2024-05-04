@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChemModel
+namespace ChemModel.Data
 {
     public static class DBConfig
     {

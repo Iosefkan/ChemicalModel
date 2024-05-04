@@ -43,6 +43,7 @@ namespace ChemModel.ViewModels
                 MathProps = new ObservableCollection<MaterialEmpiricBind>(ctx.MaterialEmpiricBinds.Where(x => x.MaterialId == SelectedMat.Id).Include(x => x.Property).Include(x => x.Property.Units).ToList());
             }
             WeakReferenceMessenger.Default.Register<MaterialMessage>(this);
+            WeakReferenceMessenger.Default.Register<UserMessage>(this);
         }
 
         private bool CanDeleteMat()
@@ -126,6 +127,7 @@ namespace ChemModel.ViewModels
             ctx.SaveChanges();
             if (user is not null)
             {
+                user = ctx.Users.Find(user.Id);
                 ctx.UserAddMaterials.Add(new UserAddMaterial()
                 {
                     Material = material,

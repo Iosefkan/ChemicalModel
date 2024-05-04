@@ -50,14 +50,13 @@ namespace ChemModel.ViewModels
             if (user.Role!.Name == "admin")
             {
                 var main = new AdminWindow() { Owner = window };
-                WeakReferenceMessenger.Default.Send(user);
+                WeakReferenceMessenger.Default.Send(new Messeges.UserMessage(user));
                 window.Hide();
                 main.ShowDialog();
             }
             else if (user.Role.Name == "user")
             {
                 var main = new ResearcherWindow() { Owner = window };
-                WeakReferenceMessenger.Default.Send(user);
                 window.Hide();
                 main.ShowDialog();
             }
