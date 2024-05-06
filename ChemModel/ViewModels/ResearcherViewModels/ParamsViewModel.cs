@@ -93,8 +93,13 @@ namespace ChemModel.ViewModels
         private bool CanSolve() =>
             SelectedMaterial is not null && SelectedModel is not null && Width > 0 && Length > 0 && Height > 0 && Velocity > 0 && Step > 0;
         [RelayCommand(CanExecute = nameof(CanSolve))]
-        private void Solve()
+        private void Solve(Window window)
         {
+            if (!Validator.IsValid(window))
+            {
+                MessageBox.Show("Устраните все ошибки ввода перед моделированием", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             long mathOperCount = 0;
@@ -114,10 +119,25 @@ namespace ChemModel.ViewModels
             int formulaOpers = CountMathOperations(SelectedModel.Formula);
             Variable tempVar = translator.Get("T");
             double geomCoef = 0.125 * Math.Pow(Height / Width, 2) - 0.625 * (Height / Width) + 1;
+            if (double.IsNaN(geomCoef))
+            {
+                MessageBox.Show("Невозможно рассчитать проправочный коэффициент с введенными данными", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             mathOperCount += 7;
             double Qch = ((Height * Width * Velocity) / 2) * geomCoef;
+            if (double.IsNaN(Qch))
+            {
+                MessageBox.Show("Невозможно рассчитать объемный расход потока материала в канале  с введенными данными", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             mathOperCount += 4;
             double gamma = Velocity / Height;
+            if (double.IsNaN(gamma))
+            {
+                MessageBox.Show("Невозможно рассчитать скорость деформации сдвига с введенными данными", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             mathOperCount++;
             double mu0 = Coefs!.First(x => x.Property.Chars == "mu0").Value;
             double qGamma = Height * Width * mu0 * Math.Pow(gamma, index + 1);
@@ -157,6 +177,11 @@ namespace ChemModel.ViewModels
             double c = Properties!.First(x => x.Property.Chars == "c").Value;
             double T0 = Properties!.First(x => x.Property.Chars == "T0").Value;
             double qAlpha = Width * termCoef * (Math.Pow(b, -1) - Temperature + Tr);
+            if (double.IsNaN(qAlpha) || double.IsNaN(qGamma))
+            {
+                MessageBox.Show("Невозможно рассчитать удельные тепловые потоки  с введенными данными", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             mathOperCount += 5;
             int N = (int)(Length / Step);
             mathOperCount++;

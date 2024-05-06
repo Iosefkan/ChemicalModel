@@ -10,6 +10,7 @@
         WindowState="Maximized"
         WindowStyle="ToolWindow"
         mc:Ignorable="d"
+        Name="this"
         Title="ResearcherWindow" Height="720" Width="1280">
     <Grid>
         <Grid.RowDefinitions>
@@ -223,7 +224,7 @@
                             </Grid>
                         </GroupBox>
                     </StackPanel>
-                    <Button Grid.Row="4" Grid.ColumnSpan="5" Content="Начать моделирование" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SolveCommand}" Grid.Column="0"/>
+                    <Button Grid.Row="4" Grid.ColumnSpan="5" Content="Начать моделирование" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding SolveCommand}" Grid.Column="0" CommandParameter="{Binding ElementName=this}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Результаты" Name="results">
